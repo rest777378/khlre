@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KHLRE — Сезон 2026/27</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #0b1220;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background: #111c30;
+    padding: 22px 15px;
+    border-bottom: 3px solid #e53945;
+}
+
+.logo {
+    font-size: 35px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: #ed3948;
+}
+
+.subtitle {
+    color: #aebbd0;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.season {
+    color: #ed3948;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+nav {
+    display: flex;
+    overflow-x: auto;
+    background: #152238;
+    padding: 8px;
+    gap: 6px;
+}
+
+nav button {
+    background: transparent;
+    border: 0;
+    color: white;
+    padding: 12px;
+    white-space: nowrap;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+nav button.active,
+nav button:hover {
+    background: #e53945;
+}
+
+main {
+    padding: 16px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+h2 {
+    font-size: 23px;
+    margin-top: 10px;
+}
+
+.description {
+    color: #aebbd0;
+    line-height: 1.6;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.card {
+    background: #17243a;
+    border: 1px solid #293a55;
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.team {
+    cursor: pointer;
+    text-align: center;
+}
+
+.team:hover {
+    border-color: #ed3948;
+    background: #202f49;
+}
+
+.team .emoji {
+    font-size: 30px;
+}
+
+.team h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.team p {
+    color: #aebbd0;
+    font-size: 12px;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    background: #17243a;
+    border-radius: 9px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 650px;
+    font-size: 13px;
+}
+
+th, td {
+    text-align: center;
+    padding: 13px 10px;
+    border-bottom: 1px solid #293a55;
+}
+
+th {
+    background: #202f49;
+    color: #c8d4e7;
+}
+
+td:nth-child(2), th:nth-child(2) {
+    text-align: left;
+}
+
+tr:first-child td:first-child {
+    color: #f3c969;
+    font-weight: bold;
+}
+
+.team-link {
+    color: white;
+    background: none;
+    border: 0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.team-link:hover {
+    color: #ed3948;
+}
+
+.search {
+    width: 100%;
+    background: #17243a;
+    color: white;
+    border: 1px solid #394c69;
+    border-radius: 8px;
+    padding: 13px;
+    margin: 12px 0;
+    font-size: 15px;
+}
+
+.back {
+    background: #e53945;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 7px;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.badge {
+    display: inline-block;
+    background: #263954;
+    border-radius: 5px;
+    padding: 6px 9px;
+    font-size: 12px;
+    margin: 3px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 15px;
+    color: #8291a9;
+    font-size: 12px;
+    border-top: 1px solid #293a55;
+    margin-top: 30px;
+}
+
+.notice {
+    border-left: 3px solid #e53945;
+    background: #17243a;
+    padding: 12px;
+    color: #bdc9dc;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 15px 0;
+}
+
+@media (min-width: 650px) {
+    .cards {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">KHL<span>RE</span></div>
+    <div class="subtitle">
+        Континентальная Хоккейная Лига — Регулярный Сезон
+    </div>
+    <div class="season">СЕЗОН 2026/2027</div>
+</header>
+
+<nav id="navigation">
+    <button class="active" onclick="showPage('home',this)">Главная</button>
+    <button onclick="showPage('table',this)">Регулярный сезон</button>
+    <button onclick="showPage('playoff',this)">Кубок Гагарина</button>
+    <button onclick="showPage('teams',this)">Клубы</button>
+    <button onclick="showPage('scorers',this)">Бомбардиры</button>
+    <button onclick="showPage('assists',this)">Ассистенты</button>
+</nav>
+
+<main id="content"></main>
+
+<footer>
+    KHLRE · ВИРТУАЛЬНАЯ ХОККЕЙНАЯ ЛИГА<br>
+    Сезон 2026/27
+</footer>
+
+<script>
+const teams = [
+    "Авангард",
+    "Автомобилист",
+    "Адмирал",
+    "Ак Барс",
+    "Амур",
+    "Барыс",
+    "Динамо Минск",
+    "Динамо Москва",
+    "Лада",
+    "Локомотив",
+    "Металлург Магнитогорск",
+    "Нефтехимик",
+    "Салават Юлаев",
+    "Сибирь",
+    "СКА",
+    "Сочи",
+    "Спартак",
+    "Торпедо",
+    "Трактор",
+    "ЦСКА",
+    "Северсталь",
+    "Шанхайские Драконы"
+];
+
+const icons = {
+    "Авангард":"🦅",
+    "Автомобилист":"🚘",
+    "Адмирал":"⚓",
+    "Ак Барс":"🐆",
+    "Амур":"🐯",
+    "Барыс":"🐆",
+    "Динамо Минск":"🔵",
+    "Динамо Москва":"🔵",
+    "Лада":"🚗",
+    "Локомотив":"🚂",
+    "Металлург Магнитогорск":"⚙️",
+    "Нефтехимик":"🟢",
+    "Салават Юлаев":"🟢",
+    "Сибирь":"❄️",
+    "СКА":"⭐",
+    "Сочи":"🌴",
+    "Спартак":"🔴",
+    "Торпедо":"🚢",
+    "Трактор":"🚜",
+    "ЦСКА":"⭐",
+    "Северсталь":"⚙️",
+    "Шанхайские Драконы":"🐉"
+};
+
+let standings = teams.map(name => ({
+    name, gp:0, w:0, otw:0, otl:0, l:0,
+    gf:0, ga:0, pts:0
+}));
+
+// Статистика пока пустая.
+// Реальные результаты и составы добавим отдельно.
+
+function showPage(page, button) {
+    document.querySelectorAll("nav button").forEach(b =>
+        b.classList.remove("active")
+    );
+
+    if(button) button.classList.add("active");
+
+    if(page === "home") renderHome();
+    if(page === "teams") renderTeams();
+    if(page === "table") renderTable();
+    if(page === "playoff") renderPlayoff();
+    if(page === "scorers") renderPlayers("scorers");
+    if(page === "assists") renderPlayers("assists");
+}
+
+function renderHome() {
+    document.getElementById("content").innerHTML = `
+        <h2>🏒 Добро пожаловать в KHLRE!</h2>
+        <p class="description">
+            Виртуальная Континентальная Хоккейная Лига.
+            Сезон 2026/27.
+        </p>
+
+        <div class="cards">
+            <div class="card">
+                <h3>🏒 Клубы</h3>
+                <div style="font-size:28px">22</div>
+                <p>Команды лиги</p>
+            </div>
+            <div class="card">
+                <h3>📊 Чемпионат</h3>
+                <div style="font-size:22px">2026/27</div>
+                <p>Регулярный сезон</p>
+            </div>
+            <div class="card">
+                <h3>🏆 Плей-офф</h3>
+                <div style="font-size:22px">Кубок</div>
+                <p>Кубок Гагарина</p>
+            </div>
+            <div class="card">
+                <h3>⭐ Статистика</h3>
+                <div style="font-size:22px">Игроки</div>
+                <p>Голы и передачи</p>
+            </div>
+        </div>
+
+        <h2>Последние результаты</h2>
+        <div class="card">
+            Результаты появятся после внесения матчей.
+        </div>
+
+        <h2>Клубы лиги</h2>
+        <div class="cards">
+            ${teams.slice(0,4).map(t => `
+                <div class="card team" onclick="openTeam('${t}')">
+                    <div class="emoji">${icons[t]}</div>
+                    <h3>${t}</h3>
+                    <p>Открыть клуб →</p>
+                </div>
+            `).join("")}
+        </div>
+        <p><button class="back" onclick="showPage('teams')">
+            Все клубы
+        </button></p>
+    `;
+}
+
+function renderTeams() {
+    document.getElementById("content").innerHTML = `
+        <h2>🏒 Все клубы KHLRE</h2>
+        <p class="description">
+            Выбери команду, чтобы открыть её страницу.
+        </p>
+        <input class="search" id="teamSearch"
+            placeholder="Поиск клуба..."
+            oninput="filterTeams()">
+        <div class="cards" id="teamCards">
+            ${teams.map(t => teamCard(t)).join("")}
+        </div>
+    `;
+}
+
+function teamCard(t) {
+    return `
+        <div class="card team" data-name="${t.toLowerCase()}"
+             onclick="openTeam('${t}')">
+            <div class="emoji">${icons[t]}</div>
+            <h3>${t}</h3>
+            <p>Состав и статистика →</p>
+        </div>
+    `;
+}
+
+function filterTeams() {
+    const q = document.getElementById("teamSearch").value.toLowerCase();
+    document.querySelectorAll("#teamCards .team").forEach(card => {
+        card.style.display = card.dataset.name.includes(q) ? "" : "none";
+    });
+}
+
+function openTeam(name) {
+    document.querySelectorAll("nav button").forEach(b =>
+        b.classList.remove("active")
+    );
+
+    document.getElementById("content").innerHTML = `
+        <button class="back" onclick="showPage('teams')">
+            ← Все клубы
+        </button>
+
+        <div class="card" style="text-align:center">
+            <div style="font-size:50px">${icons[name]}</div>
+            <h2>${name}</h2>
+            <span class="badge">KHLRE 2026/27</span>
+        </div>
+
+        <h2>📊 Статистика команды</h2>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>Матчи</th><th>Победы</th>
+                    <th>Поражения</th><th>Очки</th>
+                </tr>
+                <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            </table>
+        </div>
+
+        <h2>👥 Состав команды</h2>
+        <div class="notice">
+            Состав этого клуба ещё не внесён.
+            Следующим этапом добавим игроков, номера, позиции
+            и статистику каждого хоккеиста.
+        </div>
+
+        <h2>📈 Статистика игроков</h2>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>Игрок</th><th>Поз.</th>
+                    <th>М</th><th>Г</th><th>П</th><th>О</th>
+                </tr>
+                <tr>
+                    <td colspan="6">Данные будут добавлены</td>
+                </tr>
+            </table>
+        </div>
+    `;
+}
+
+function renderTable() {
+    const sorted = [...standings].sort((a,b) => b.pts-a.pts ||
+        (b.gf-b.ga)-(a.gf-a.ga));
+
+    document.getElementById("content").innerHTML = `
+        <h2>📊 Регулярный чемпионат</h2>
+        <p class="description">Сезон 2026/27</p>
+        <div class="notice">
+            Таблица пока пустая. По мере добавления результатов
+            матчи, очки и разница шайб будут учитываться автоматически.
+        </div>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>#</th><th>Команда</th><th>И</th>
+                    <th>В</th><th>ВО</th><th>ПО</th>
+                    <th>П</th><th>Ш</th><th>О</th>
+                </tr>
+                ${sorted.map((t,i) => `
+                    <tr>
+                        <td>${i+1}</td>
+                        <td><button class="team-link"
+                            onclick="openTeam('${t.name}')">
+                            ${icons[t.name]} ${t.name}
+                        </button></td>
+                        <td>${t.gp}</td><td>${t.w}</td>
+                        <td>${t.otw}</td><td>${t.otl}</td>
+                        <td>${t.l}</td>
+                        <td>${t.gf}:${t.ga}</td><td>${t.pts}</td>
+                    </tr>
+                `).join("")}
+            </table>
+        </div>
+    `;
+}
+
+function renderPlayoff() {
+    document.getElementById("content").innerHTML = `
+        <h2>🏆 Кубок Гагарина</h2>
+        <p class="description">Плей-офф KHLRE 2026/27</p>
+        <div class="notice">
+            Сетка будет заполнена после определения участников
+            плей-офф. Здесь появятся серии, счёт матчей и победители.
+        </div>
+        <div class="cards">
+            <div class="card"><h3>1/8 финала</h3><p>Ожидание</p></div>
+            <div class="card"><h3>1/4 финала</h3><p>Ожидание</p></div>
+            <div class="card"><h3>Полуфинал</h3><p>Ожидание</p></div>
+            <div class="card"><h3>Финал</h3><p>Кубок Гагарина</p></div>
+        </div>
+    `;
+}
+
+function renderPlayers(type) {
+    const title = type === "scorers" ?
+        "⭐ Лучшие бомбардиры" : "🎯 Лучшие ассистенты";
+
+    document.getElementById("content").innerHTML = `
+        <h2>${title}</h2>
+        <p class="description">Сезон 2026/27</p>
+        <div class="notice">
+            Здесь появится статистика всех игроков лиги.
+            Бомбардиры будут сортироваться по очкам,
+            ассистенты — по количеству передач.
+        </div>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>#</th><th>Игрок</th><th>Клуб</th>
+                    <th>М</th><th>Г</th><th>П</th><th>О</th>
+                </tr>
+                <tr>
+                    <td colspan="7">Статистика ещё не добавлена</td>
+                </tr>
+            </table>
+        </div>
+    `;
+}
+
+renderHome();
+</script>
+
+</body>
+  </html>
